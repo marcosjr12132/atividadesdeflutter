@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
 import './questionario.dart';
+import './inicio.dart';
+
+
 
 void main() {
   runApp(AulaComponentes());
 }
+  void Inicio(() {
+      setState(() {
+        perguntaAtual = 0;
+      });
+    }),
+
 
 class AulaComponentes extends StatefulWidget {
   @override
   State<AulaComponentes> createState() => _AulaComponentesState();
 }
 
+
 class _AulaComponentesState extends State<AulaComponentes> {
   var perguntaAtual = 0;
   var cor = Colors.white;
+
+
 
   final List<Map<String, Object>> perguntas = [
     {
@@ -54,7 +66,7 @@ class _AulaComponentesState extends State<AulaComponentes> {
                 perguntaAtual: perguntaAtual,
                 onRespostaSelecionada: () => acao(),
               )
-            : Text("Resultado"),
+
       ),
     );
   }
