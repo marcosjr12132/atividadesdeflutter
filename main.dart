@@ -1,65 +1,61 @@
 import 'package:flutter/material.dart';
-main() {
-  runApp(ComponenteInicial());
+import './questionario.dart';
+
+void main() {
+  runApp(AulaComponentes());
 }
 
-class ComponenteInicial extends StatefulWidget{
-  const ComponenteInicial({super.key});
-
+class AulaComponentes extends StatefulWidget {
   @override
-  State<ComponenteInicial> createState() => _ComponenteInicialState();
+  State<AulaComponentes> createState() => _AulaComponentesState();
 }
 
-class _ComponenteInicialState extends State<ComponenteInicial> {
-  var contador = 0;
-  get perguntas => [
-    "quantos anos voce tem?",
-    "voce gosta de qual comida?",
-    "qual a cor da sua roupa?",
-    "quem é o pior professor?"
+class _AulaComponentesState extends State<AulaComponentes> {
+  var perguntaAtual = 0;
+  var cor = Colors.white;
+
+  final List<Map<String, Object>> perguntas = [
+    {
+      "texto": "Qual é o seu animal favorito?",
+      "respostas": ["Cachorro", "Gato", "Elefante", "Panda"]
+    },
+    {
+      "texto": "Qual é a sua estação do ano favorita?",
+      "respostas": ["Verão", "Outono", "Inverno", "Primavera"]
+    },
+    {
+      "texto": "Qual é a sua matéria favorita?",
+      "respostas": ["Matemática", "História", "Ciências", "Artes"]
+    },
   ];
 
-  void eventobotao() {
+  bool get temPergunta {
+    return perguntaAtual < perguntas.length;
+  }
+
+  void acao() {
     setState(() {
-      contador: contador++;
+      perguntaAtual++;
     });
-    print(contador);
+    print(perguntaAtual);
   }
 
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-            appBar: AppBar(
-              title: Text("Perguntas e respostas"),
-            ),
-            body: Column(
-              children: [
-                Text(perguntas[contador]),
-                ElevatedButton(
-                  onPressed: eventobotao,
-                  child: Text("Clique"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    print("Anonimo");
-                  },
-                  child: Text("Anonimo"),
-                ),
-                ElevatedButton(
-                  onPressed: () => print("Função arrow"),
-                  child: Text("Meu botao"),
-                ),
-                  ElevatedButton(
-                  onPressed: null
-                  child: Text("Nulo"),
-                ),
-                Column(children: <Widget>[
-                  Text('Aprendendo'),
-                  Text('Programação'),
-                  Text('Flutter'),
-                ]),
-              ],
-            )));
+      home: Scaffold(
+        appBar: AppBar(
+          title: temPergunta
+              ? Text(perguntas[perguntaAtual]["texto"].toString())
+              : Text("Terminou"),
+        ),
+        body: temPergunta
+            ? Questionario(
+                perguntas: perguntas,
+                perguntaAtual: perguntaAtual,
+                onRespostaSelecionada: () => acao(),
+              )
+            : Text("Resultado"),
+      ),
+    );
   }
 }
